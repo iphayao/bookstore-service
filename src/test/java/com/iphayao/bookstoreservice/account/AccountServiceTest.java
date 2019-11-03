@@ -30,7 +30,7 @@ class AccountServiceTest {
     private AccountService accountService;
 
     @Test
-    void test_create_new_account_expect_account_resp_not_null() {
+    void test_create_new_account_expect_account_resp_not_null() throws AccountExistedException {
         // arrange
         AccountDto accountDto = mockAccountDto();
         when(accountRepository.save(any(Account.class))).thenAnswer(e -> e.getArgument(0));
@@ -43,7 +43,7 @@ class AccountServiceTest {
     }
 
     @Test
-    void test_create_new_account_expect_account_resp_with_name_surname_and_birthday() {
+    void test_create_new_account_expect_account_resp_with_name_surname_and_birthday() throws AccountExistedException {
         // arrange
         AccountDto accountDto = mockAccountDto();
         when(accountRepository.save(any(Account.class))).thenAnswer(e -> e.getArgument(0));
@@ -60,7 +60,7 @@ class AccountServiceTest {
     }
 
     @Test
-    void test_create_new_account_expect_save_account_repository() {
+    void test_create_new_account_expect_save_account_repository() throws AccountExistedException {
         // arrange
         AccountDto accountDto = mockAccountDto();
 
@@ -69,6 +69,18 @@ class AccountServiceTest {
 
         // assert
         verify(accountRepository, times(1)).save(any());
+    }
+
+    @Test
+    void test_create_new_account_expect_account_exist_exception() {
+        AccountDto accountDto = mockAccountDto();
+        Optional<Account> mockAccount = mockAccount(accountDto);
+        when(accountRepository.findByUsername(eq(accountDto.getUsername()))).thenReturn(mockAccount);
+
+        // act
+        // assert
+        assertThrows(AccountExistedException.class, () -> accountService.createNewAccount(accountDto));
+
     }
 
     @Test

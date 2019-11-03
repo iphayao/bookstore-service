@@ -25,7 +25,7 @@ public class AccountController {
     }
 
     @PostMapping
-    public void createUser(@RequestBody AccountDto accountDto) {
+    public void createUser(@RequestBody AccountDto accountDto) throws AccountExistedException {
         accountService.createNewAccount(accountDto);
     }
 

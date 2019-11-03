@@ -4,6 +4,8 @@ import com.iphayao.bookstoreservice.account.exception.AccountNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 public class AccountService {
     private AccountRepository accountRepository;
@@ -16,7 +18,12 @@ public class AccountService {
         this.passwordEncoder = passwordEncoder;
     }
 
-    public AccountRespDto createNewAccount(AccountDto accountDto) {
+    public AccountRespDto createNewAccount(AccountDto accountDto) throws AccountExistedException {
+        Optional<Account> existAccount = accountRepository.findByUsername(accountDto.getUsername());
+        if(existAccount.isPresent()) {
+            throw new AccountExistedException(accountDto.getUsername());
+        }
+
         Account account = accountMapper.accountDtoToAccount(accountDto);
         account.setPassword(passwordEncoder.encode(account.getPassword()));
 
