@@ -25,6 +25,7 @@ public class WebSecureConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests(authenticationRequests -> authenticationRequests
                 .antMatchers(HttpMethod.POST, "/login", "/users").permitAll()
+                .antMatchers(HttpMethod.GET, "/books").permitAll()
                 .anyRequest().authenticated())
                 .csrf().disable()
                 .addFilterAt(accountAuthenticationFilter(), BasicAuthenticationFilter.class);
