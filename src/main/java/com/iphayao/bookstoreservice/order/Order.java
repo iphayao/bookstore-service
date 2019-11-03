@@ -1,7 +1,9 @@
 package com.iphayao.bookstoreservice.order;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
@@ -9,6 +11,8 @@ import javax.persistence.*;
 @Builder
 @Entity
 @Table(name = "bookOrder")
+@NoArgsConstructor
+@AllArgsConstructor
 public class Order {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

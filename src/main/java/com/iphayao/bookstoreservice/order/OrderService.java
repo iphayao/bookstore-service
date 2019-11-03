@@ -7,6 +7,7 @@ import com.iphayao.bookstoreservice.book.BookService;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 @Service
@@ -24,7 +25,8 @@ public class OrderService {
     public double createOrder(String username, OrderDto orderDto) throws AccountNotFoundException {
         List<Order> orders = new ArrayList<>();
         Account account = accountService.getUserByUsername(username);
-        orderDto.getOrders().forEach(bookId -> bookService.getBookById(bookId)
+        orderDto.getOrders()
+                .forEach(bookId -> bookService.getBookById(bookId)
                 .ifPresent(b -> orders.add(Order.builder()
                         .accountId(account.getId())
                         .bookId(bookId)

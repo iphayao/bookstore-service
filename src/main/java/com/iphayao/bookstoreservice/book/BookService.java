@@ -9,6 +9,10 @@ import java.util.Optional;
 public class BookService {
     private RemoteBookInterface remoteBookInterface;
 
+    public BookService(RemoteBookInterface remoteBookInterface) {
+        this.remoteBookInterface = remoteBookInterface;
+    }
+
     public List<Book> getAllBooks() {
         return remoteBookInterface.getAllBooks();
     }
