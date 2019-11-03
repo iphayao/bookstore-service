@@ -1,4 +1,4 @@
-package com.iphayao.bookstoreservice.common;
+package com.iphayao.bookstoreservice.security;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;

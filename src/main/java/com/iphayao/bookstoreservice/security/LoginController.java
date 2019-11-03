@@ -1,4 +1,4 @@
-package com.iphayao.bookstoreservice.common;
+package com.iphayao.bookstoreservice.security;
 
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -7,6 +7,6 @@ import org.springframework.web.bind.annotation.RestController;
 public class LoginController {
     @PostMapping("/login")
     public void loginEndpoint() {
-
+        // Nothing to response
     }
 }

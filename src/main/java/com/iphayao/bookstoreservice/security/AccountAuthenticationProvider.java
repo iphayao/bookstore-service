@@ -1,4 +1,4 @@
-package com.iphayao.bookstoreservice.common;
+package com.iphayao.bookstoreservice.security;
 
 import com.iphayao.bookstoreservice.account.Account;
 import com.iphayao.bookstoreservice.account.AccountRepository;

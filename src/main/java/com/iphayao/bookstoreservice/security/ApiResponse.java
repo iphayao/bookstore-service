@@ -1,4 +1,4 @@
-package com.iphayao.bookstoreservice.common;
+package com.iphayao.bookstoreservice.security;
 
 import lombok.Data;
 import org.springframework.http.HttpStatus;

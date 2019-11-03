@@ -1,6 +1,6 @@
 package com.iphayao.bookstoreservice.account;
 
-import com.iphayao.bookstoreservice.common.ApiResponse;
+import com.iphayao.bookstoreservice.account.exception.AccountNotFoundException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,7 +19,7 @@ public class AccountController {
     }
 
     @GetMapping
-    public AccountRespDto getUser(Principal user) {
+    public AccountRespDto getUser(Principal user) throws AccountNotFoundException {
         Account account = accountService.getUserByUsername(user.getName());
         return accountMapper.accountToAccountRespDto(account);
     }

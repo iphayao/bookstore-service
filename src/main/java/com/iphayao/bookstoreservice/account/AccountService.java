@@ -1,5 +1,6 @@
 package com.iphayao.bookstoreservice.account;
 
+import com.iphayao.bookstoreservice.account.exception.AccountNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -24,8 +25,8 @@ public class AccountService {
         return accountMapper.accountToAccountRespDto(account);
     }
 
-    public Account getUserByUsername(String name) {
-        return accountRepository.findByUsername(name).orElse(null);
+    public Account getUserByUsername(String name) throws AccountNotFoundException {
+        return accountRepository.findByUsername(name).orElseThrow(() -> new AccountNotFoundException(name));
     }
 
     public void deleteAccountByUsername(String name) {
