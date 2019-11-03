@@ -3,9 +3,9 @@ package com.iphayao.bookstoreservice.book;
 import com.fasterxml.jackson.databind.PropertyNamingStrategy;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import lombok.Builder;
-import lombok.Value;
+import lombok.Getter;
 
-@Value
+@Getter
 @Builder
 @JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy.class)
 public class Book {

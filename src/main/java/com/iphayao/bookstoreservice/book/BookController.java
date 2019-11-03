@@ -4,19 +4,19 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.List;
-
 @RestController
 @RequestMapping("/books")
 public class BookController {
-    private RemoteBookInterface remoteBookInterface;
+    private BookService bookService;
 
-    public BookController(RemoteBookInterface remoteBookInterface) {
-        this.remoteBookInterface = remoteBookInterface;
+    public BookController(BookService bookService) {
+        this.bookService = bookService;
     }
 
     @GetMapping
-    List<Book> getAllBooks() {
-        return remoteBookInterface.getAllBooks();
+    BookRespDto getAllBooks() {
+        return BookRespDto.builder()
+                .books(bookService.getAllBooks())
+                .build();
     }
 }

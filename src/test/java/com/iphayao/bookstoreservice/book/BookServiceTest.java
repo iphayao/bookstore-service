@@ -6,6 +6,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
@@ -18,6 +19,9 @@ import static org.mockito.Mockito.when;
 class BookServiceTest {
     @Mock
     private RemoteBookInterface remoteBookInterface;
+    @Mock
+    private RemoteRecommendationInterface remoteRecommendationInterface;
+
     @InjectMocks
     private BookService bookService;
 
@@ -25,6 +29,7 @@ class BookServiceTest {
     void test_get_all_book_expect_list_of_books() {
         // arrange
         when(remoteBookInterface.getAllBooks()).thenReturn(mockRemoteBook());
+        when(remoteRecommendationInterface.getRecommentBooks()).thenReturn(new ArrayList<>());
 
         // act
         List<Book> books = bookService.getAllBooks();
