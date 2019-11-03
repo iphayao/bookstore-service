@@ -6,14 +6,17 @@ import com.iphayao.bookstoreservice.account.AccountMapper;
 import com.iphayao.bookstoreservice.account.AccountMapperImpl;
 import com.iphayao.bookstoreservice.book.Book;
 import com.iphayao.bookstoreservice.order.OrderDto;
+import org.springframework.security.crypto.factory.PasswordEncoderFactories;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 public class TestHelper {
     private static AccountMapper accountMapper = new AccountMapperImpl();
+    private static PasswordEncoder passwordEncoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
 
     public static Optional<Account> mockAccount(AccountDto accountDto) {
         return Optional.ofNullable(accountMapper.accountDtoToAccount(accountDto));
@@ -22,6 +25,14 @@ public class TestHelper {
     public static Optional<Account> mockAccount() {
         Account account = accountMapper.accountDtoToAccount(mockAccountDto());
         account.setId(1);
+        return Optional.ofNullable(account);
+    }
+
+    public static Optional<Account> mockAccount(Map<String, String> values) {
+        Account account = new Account();
+        account.setUsername(values.get("username"));
+        account.setPassword(passwordEncoder.encode(values.get("password")));
+
         return Optional.ofNullable(account);
     }
 

@@ -2,16 +2,15 @@ package com.iphayao.bookstoreservice.security;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.authentication.AnonymousAuthenticationToken;
-import org.springframework.security.authentication.AuthenticationDetailsSource;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.authentication.*;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.authentication.NullRememberMeServices;
 import org.springframework.security.web.authentication.RememberMeServices;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
+import org.springframework.security.web.authentication.www.BasicAuthenticationEntryPoint;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 
 import javax.servlet.FilterChain;
@@ -26,6 +25,7 @@ public class AccountAuthenticationFilter extends BasicAuthenticationFilter {
     private ObjectMapper objectMapper = new ObjectMapper();
     private AuthenticationDetailsSource<HttpServletRequest, ?> authenticationDetailsSource;
     private RememberMeServices rememberMeServices = new NullRememberMeServices();
+    private AuthenticationEntryPoint authenticationEntryPoint = new BasicAuthenticationEntryPoint();
 
     public AccountAuthenticationFilter(AuthenticationManager authenticationManager) {
         super(authenticationManager);
@@ -34,15 +34,15 @@ public class AccountAuthenticationFilter extends BasicAuthenticationFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws IOException, ServletException {
-        UsernamePasswordAuthenticationToken authRequest = convert(request);
-        if (authRequest == null) {
-            chain.doFilter(request, response);
-            return;
-        }
-
-        String userName = authRequest.getName();
-
         try {
+            UsernamePasswordAuthenticationToken authRequest = convert(request);
+            if (authRequest == null) {
+                chain.doFilter(request, response);
+                return;
+            }
+
+            String userName = authRequest.getName();
+
             if (authenticationIsRequired(userName)) {
                 Authentication authResult = getAuthenticationManager().authenticate(authRequest);
                 log.info("Login '{}' success", userName);
@@ -53,12 +53,16 @@ public class AccountAuthenticationFilter extends BasicAuthenticationFilter {
                 onSuccessfulAuthentication(request, response, authResult);
             }
         } catch (AuthenticationException failed) {
-            log.info("Login '{}' failed: {}", userName, failed.getMessage());
+            log.info("Login failed: {}", failed.getMessage());
 
             SecurityContextHolder.clearContext();
             rememberMeServices.loginFail(request, response);
 
             onUnsuccessfulAuthentication(request, response, failed);
+
+            authenticationEntryPoint.commence(request, response, failed);
+
+            return;
         }
 
         chain.doFilter(request, response);
@@ -74,6 +78,8 @@ public class AccountAuthenticationFilter extends BasicAuthenticationFilter {
                 UsernamePasswordAuthenticationToken result = new UsernamePasswordAuthenticationToken(principal, credential);
                 result.setDetails(authenticationDetailsSource.buildDetails(request));
                 return result;
+            } else {
+                throw new BadCredentialsException("Incorrect request body");
             }
         }
 
