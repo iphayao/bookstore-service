@@ -10,6 +10,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
+import static com.iphayao.bookstoreservice.TestHelper.mockRemoteBook;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
 
@@ -62,21 +63,4 @@ class BookServiceTest {
         });
     }
 
-    private List<Book> mockRemoteBook() {
-
-        return Arrays.asList(
-                Book.builder()
-                        .id(1)
-                        .bookName("test book name")
-                        .authorName("john doe")
-                        .price(100.0)
-                        .build(),
-                Book.builder()
-                        .id(2)
-                        .bookName("test book name")
-                        .authorName("john doe")
-                        .price(100.0)
-                        .build()
-        );
-    }
 }

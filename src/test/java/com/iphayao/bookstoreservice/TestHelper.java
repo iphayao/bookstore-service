@@ -4,7 +4,12 @@ import com.iphayao.bookstoreservice.account.Account;
 import com.iphayao.bookstoreservice.account.AccountDto;
 import com.iphayao.bookstoreservice.account.AccountMapper;
 import com.iphayao.bookstoreservice.account.AccountMapperImpl;
+import com.iphayao.bookstoreservice.book.Book;
+import com.iphayao.bookstoreservice.order.OrderDto;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
 
 public class TestHelper {
@@ -28,5 +33,28 @@ public class TestHelper {
                 .surname("Doe")
                 .dateOfBirth("15/01/1985")
                 .build();
+    }
+
+    public static OrderDto mockOrderDto() {
+        return OrderDto.builder()
+                .orders(Arrays.asList(1, 4))
+                .build();
+    }
+
+    public static List<Book> mockRemoteBook() {
+        return Arrays.asList(
+                Book.builder()
+                        .id(1)
+                        .bookName("test book name")
+                        .authorName("john doe")
+                        .price(100.0)
+                        .build(),
+                Book.builder()
+                        .id(2)
+                        .bookName("test book name")
+                        .authorName("john doe")
+                        .price(100.0)
+                        .build()
+        );
     }
 }

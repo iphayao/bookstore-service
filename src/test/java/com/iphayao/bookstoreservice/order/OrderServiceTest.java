@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.IntStream;
 
 import static com.iphayao.bookstoreservice.TestHelper.mockAccount;
 import static org.junit.jupiter.api.Assertions.*;
@@ -81,6 +82,8 @@ class OrderServiceTest {
         when(bookService.getBookById(anyInt())).thenReturn(mockBook());
         when(accountService.getUserByUsername(eq(username))).thenReturn(mockAccount().get());
         when(orderRepository.saveAll(any())).thenAnswer(e -> {
+            List<Order> orders = e.getArgument(0);
+            IntStream.range(0, orders.size()).forEach(i -> orders.get(i).setId(i + 1));
             savedOrder.addAll(e.getArgument(0));
             return e.getArgument(0);
         });
@@ -91,6 +94,7 @@ class OrderServiceTest {
         // assert
         assertEquals(2, savedOrder.size());
         savedOrder.forEach(order -> {
+            assertNotNull(order.getId());
             assertEquals(1, order.getAccountId());
             assertEquals(100.0, order.getPrice());
         });
