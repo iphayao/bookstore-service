@@ -6,9 +6,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.rmi.Remote;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -46,6 +44,22 @@ class BookServiceTest {
         // assert
         assertTrue(book.isPresent());
         assertEquals(1, book.get().getId());
+    }
+
+    @Test
+    void test_get_book_by_id_expect_book_info() {
+        // arrange
+        when(remoteBookInterface.getAllBooks()).thenReturn(mockRemoteBook());
+
+        // act
+        Optional<Book> book = bookService.getBookById(1);
+
+        // assert
+        book.ifPresent(b -> {
+            assertEquals("test book name", b.getBookName());
+            assertEquals("john doe", b.getAuthorName());
+            assertEquals(100.0, b.getPrice());
+        });
     }
 
     private List<Book> mockRemoteBook() {

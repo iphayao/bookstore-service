@@ -1,12 +1,11 @@
 package com.iphayao.bookstoreservice.account;
 
+import com.iphayao.bookstoreservice.order.Order;
 import lombok.Data;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.util.Date;
+import java.util.List;
 
 @Data
 @Entity
@@ -19,4 +18,6 @@ public class Account {
     private String name;
     private String surname;
     private Date dateOfBirth;
+    @OneToMany(mappedBy = "accountId")
+    private List<Order> orders;
 }

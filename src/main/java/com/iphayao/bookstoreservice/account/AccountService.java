@@ -34,7 +34,8 @@ public class AccountService {
     }
 
     public Account getUserByUsername(String name) throws AccountNotFoundException {
-        return accountRepository.findByUsername(name).orElseThrow(() -> new AccountNotFoundException(name));
+        return accountRepository.findByUsername(name)
+                .orElseThrow(() -> new AccountNotFoundException(name));
     }
 
     public void deleteAccountByUsername(String name) {

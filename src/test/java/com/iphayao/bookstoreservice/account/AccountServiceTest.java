@@ -14,6 +14,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import java.text.SimpleDateFormat;
 import java.util.Optional;
 
+import static com.iphayao.bookstoreservice.TestHelper.mockAccount;
+import static com.iphayao.bookstoreservice.TestHelper.mockAccountDto;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
@@ -135,18 +137,6 @@ class AccountServiceTest {
         verify(accountRepository, times(1)).delete(any());
     }
 
-    private Optional<Account> mockAccount(AccountDto accountDto) {
-        return Optional.ofNullable(accountMapper.accountDtoToAccount(accountDto));
-    }
 
-    private AccountDto mockAccountDto() {
-        return AccountDto.builder()
-                .username("john.doe")
-                .password("thisismysecret")
-                .name("John")
-                .surname("Doe")
-                .dateOfBirth("15/01/1985")
-                .build();
-    }
 
 }

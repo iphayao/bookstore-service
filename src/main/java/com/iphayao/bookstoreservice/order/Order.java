@@ -1,18 +1,19 @@
 package com.iphayao.bookstoreservice.order;
 
+import lombok.Builder;
 import lombok.Data;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Data
+@Builder
 @Entity
+@Table(name = "bookOrder")
 public class Order {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private int id;
-    private int accountId;
-    private int bookId;
+    private Integer id;
+    private Integer accountId;
+    private Integer bookId;
+    private Double price;
 }
