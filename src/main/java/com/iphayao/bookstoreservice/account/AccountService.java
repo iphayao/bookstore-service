@@ -1,5 +1,6 @@
 package com.iphayao.bookstoreservice.account;
 
+import com.iphayao.bookstoreservice.account.exception.AccountExistedException;
 import com.iphayao.bookstoreservice.account.exception.AccountNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;

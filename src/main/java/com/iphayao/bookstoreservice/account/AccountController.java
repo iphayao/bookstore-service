@@ -1,5 +1,6 @@
 package com.iphayao.bookstoreservice.account;
 
+import com.iphayao.bookstoreservice.account.exception.AccountExistedException;
 import com.iphayao.bookstoreservice.account.exception.AccountNotFoundException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;

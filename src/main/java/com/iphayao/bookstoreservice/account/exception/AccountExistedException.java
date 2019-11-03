@@ -1,4 +1,4 @@
-package com.iphayao.bookstoreservice.account;
+package com.iphayao.bookstoreservice.account.exception;
 
 import com.iphayao.bookstoreservice.common.ApiException;
 
