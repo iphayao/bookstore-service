@@ -2,6 +2,7 @@ package com.iphayao.bookstoreservice.order;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.iphayao.bookstoreservice.account.AccountRepository;
+import com.iphayao.bookstoreservice.account.AccountService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +29,8 @@ class OrderControllerTest {
     @MockBean
     private OrderService orderService;
     @MockBean
+    private AccountService accountService;
+    @MockBean
     private AccountRepository accountRepository;
     @MockBean
     private OrderRepository orderRepository;
@@ -42,7 +45,7 @@ class OrderControllerTest {
     void test_create_order_expect_total_price() throws Exception {
         // arrange
         OrderDto orderDto = mockOrderDto();
-        when(orderService.createOrder(anyString(), any())).thenReturn(999.99);
+        when(orderService.createOrder(anyString(), any(), any())).thenReturn(999.99);
 
         // act
         MvcResult result = mockMvc.perform(post("/users/orders")

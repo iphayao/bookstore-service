@@ -7,24 +7,20 @@ import com.iphayao.bookstoreservice.book.BookService;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 @Service
 public class OrderService {
     private BookService bookService;
-    private AccountService accountService;
     private OrderRepository orderRepository;
 
-    public OrderService(BookService bookService, AccountService accountService, OrderRepository orderRepository) {
+    public OrderService(BookService bookService, OrderRepository orderRepository) {
         this.bookService = bookService;
         this.orderRepository = orderRepository;
-        this.accountService = accountService;
     }
 
-    public double createOrder(String username, OrderDto orderDto) throws AccountNotFoundException {
+    public double createOrder(String username, OrderDto orderDto, Account account) throws AccountNotFoundException {
         List<Order> orders = new ArrayList<>();
-        Account account = accountService.getUserByUsername(username);
         orderDto.getOrders()
                 .forEach(bookId -> bookService.getBookById(bookId)
                 .ifPresent(b -> orders.add(Order.builder()
@@ -37,5 +33,10 @@ public class OrderService {
         orderRepository.saveAll(orders);
 
         return orders.stream().mapToDouble(Order::getPrice).sum();
+    }
+
+    public void deleteOrderByAccountId(int accountId) {
+        List<Order> orders = orderRepository.findByAccountId(accountId);
+        orderRepository.deleteAll(orders);
     }
 }

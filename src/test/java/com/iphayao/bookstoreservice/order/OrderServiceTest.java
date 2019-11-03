@@ -11,13 +11,11 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.IntStream;
 
 import static com.iphayao.bookstoreservice.TestHelper.mockAccount;
+import static com.iphayao.bookstoreservice.TestHelper.mockOrder;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.verify;
@@ -42,12 +40,12 @@ class OrderServiceTest {
         OrderDto orderDto = new OrderDto();
         orderDto.setOrders(Arrays.asList(1, 2));
         String username = "test_user";
+        Account account = mockAccount().get();
 
         when(bookService.getBookById(anyInt())).thenReturn(mockBook());
-        when(accountService.getUserByUsername(eq(username))).thenReturn(mockAccount().get());
 
         // act
-        double price = orderService.createOrder(username, orderDto);
+        double price = orderService.createOrder(username, orderDto, account);
 
         // assert
         assertEquals(200.0, price);
@@ -58,13 +56,13 @@ class OrderServiceTest {
         // arrange
         OrderDto orderDto = new OrderDto();
         orderDto.setOrders(Arrays.asList(1, 2));
+        Account account = mockAccount().get();
         String username = "test_user";
 
         when(bookService.getBookById(anyInt())).thenReturn(mockBook());
-        when(accountService.getUserByUsername(eq(username))).thenReturn(mockAccount().get());
 
         // act
-        double price = orderService.createOrder(username, orderDto);
+        double price = orderService.createOrder(username, orderDto, account);
 
         // assert
         verify(orderRepository, times(1)).saveAll(any());
@@ -75,12 +73,12 @@ class OrderServiceTest {
         // arrange
         OrderDto orderDto = new OrderDto();
         orderDto.setOrders(Arrays.asList(1, 2));
+        Account account = mockAccount().get();
         String username = "test_user";
 
         List<Order> savedOrder = new ArrayList<>();
 
         when(bookService.getBookById(anyInt())).thenReturn(mockBook());
-        when(accountService.getUserByUsername(eq(username))).thenReturn(mockAccount().get());
         when(orderRepository.saveAll(any())).thenAnswer(e -> {
             List<Order> orders = e.getArgument(0);
             IntStream.range(0, orders.size()).forEach(i -> orders.get(i).setId(i + 1));
@@ -89,7 +87,7 @@ class OrderServiceTest {
         });
 
         // act
-        orderService.createOrder(username, orderDto);
+        orderService.createOrder(username, orderDto, account);
 
         // assert
         assertEquals(2, savedOrder.size());
@@ -101,6 +99,20 @@ class OrderServiceTest {
 
         assertEquals(1, savedOrder.get(0).getBookId());
         assertEquals(2, savedOrder.get(1).getBookId());
+    }
+
+    @Test
+    void test_delete_order_by_account_id_expect_delete_records() {
+        // arrange
+        int accountId = 1;
+
+        when(orderRepository.findByAccountId(eq(accountId))).thenReturn(Collections.singletonList(mockOrder()));
+
+        // act
+        orderService.deleteOrderByAccountId(accountId);
+
+        // assert
+        verify(orderRepository, times(1)).deleteAll(any());
     }
 
     private Optional<Book> mockBook() {

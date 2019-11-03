@@ -2,6 +2,8 @@ package com.iphayao.bookstoreservice.account;
 
 import com.iphayao.bookstoreservice.account.exception.AccountExistedException;
 import com.iphayao.bookstoreservice.account.exception.AccountNotFoundException;
+import com.iphayao.bookstoreservice.order.OrderRepository;
+import com.iphayao.bookstoreservice.order.OrderService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -24,6 +26,8 @@ import static org.mockito.Mockito.*;
 class AccountServiceTest {
     @Mock
     private AccountRepository accountRepository;
+    @Mock
+    private OrderService orderService;
     @Spy
     private AccountMapper accountMapper = new AccountMapperImpl();
     @Spy

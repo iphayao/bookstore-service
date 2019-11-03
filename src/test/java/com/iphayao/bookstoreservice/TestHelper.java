@@ -5,6 +5,7 @@ import com.iphayao.bookstoreservice.account.AccountDto;
 import com.iphayao.bookstoreservice.account.AccountMapper;
 import com.iphayao.bookstoreservice.account.AccountMapperImpl;
 import com.iphayao.bookstoreservice.book.Book;
+import com.iphayao.bookstoreservice.order.Order;
 import com.iphayao.bookstoreservice.order.OrderDto;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -49,6 +50,12 @@ public class TestHelper {
     public static OrderDto mockOrderDto() {
         return OrderDto.builder()
                 .orders(Arrays.asList(1, 4))
+                .build();
+    }
+
+    public static Order mockOrder() {
+        return Order.builder()
+                .accountId(1)
                 .build();
     }
 
